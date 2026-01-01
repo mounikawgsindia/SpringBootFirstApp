@@ -24,16 +24,29 @@ COPY --from=build /app/target/*.jar app.jar
 # Expose the application port
 EXPOSE 8080
 
-# Set environment variables with defaults
-ENV APP_NAME=demo
-ENV DB_HOST=localhost
-ENV DB_PORT=5432
-ENV DB_NAME=postgres
-ENV DB_USERNAME=postgres
-ENV DB_PASSWORD=mounika
-ENV DDL_AUTO=update
-ENV SHOW_SQL=true
-ENV FORMAT_SQL=true
+# Build-time arguments (can be overridden during docker build)
+ARG APP_NAME=demo
+ARG DB_HOST=localhost
+ARG DB_PORT=5432
+ARG DB_NAME=postgres
+ARG DB_USERNAME=postgres
+ARG DB_PASSWORD=mounika
+ARG DDL_AUTO=update
+ARG SHOW_SQL=true
+ARG FORMAT_SQL=true
+ARG SPRING_PROFILES_ACTIVE=default
+
+# Runtime environment variables (can be overridden during docker run)
+ENV APP_NAME=${APP_NAME}
+ENV DB_HOST=${DB_HOST}
+ENV DB_PORT=${DB_PORT}
+ENV DB_NAME=${DB_NAME}
+ENV DB_USERNAME=${DB_USERNAME}
+ENV DB_PASSWORD=${DB_PASSWORD}
+ENV DDL_AUTO=${DDL_AUTO}
+ENV SHOW_SQL=${SHOW_SQL}
+ENV FORMAT_SQL=${FORMAT_SQL}
+ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
